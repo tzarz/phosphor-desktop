@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Remove matrix-desktop and restore the most recent backup taken by install.sh.
+# Remove phosphor-desktop and restore the most recent backup taken by install.sh.
 #
 #   ./uninstall.sh                 restore newest backup
 #   ./uninstall.sh --keep-config   remove the theme files, leave settings alone
@@ -13,24 +13,24 @@ KEEP=0
 say() { printf '\033[38;5;46m==>\033[0m %s\n' "$*"; }
 
 say "stopping the live wallpaper"
-[ -x "$HOME/.local/bin/matrix-rain" ] && "$HOME/.local/bin/matrix-rain" stop >/dev/null 2>&1
+[ -x "$HOME/.local/bin/phosphor-rain" ] && "$HOME/.local/bin/phosphor-rain" stop >/dev/null 2>&1
 
 say "removing installed files"
-rm -rf "$HOME/.local/share/matrix-rain" \
-       "$HOME/.local/share/lxqt/themes/Matrix" \
-       "$HOME/.local/share/icons/Papirus-Matrix" \
-       "$HOME/.themes/Matrix"
-rm -f  "$HOME/.local/share/qterminal/color-schemes/Matrix.colorscheme" \
-       "$HOME/.local/bin/matrix-rain" \
-       "$HOME/.config/autostart/matrix-rain.desktop" \
-       "$HOME/.config/autostart/xscreensaver-matrix.desktop"
+rm -rf "$HOME/.local/share/phosphor-rain" \
+       "$HOME/.local/share/lxqt/themes/Phosphor" \
+       "$HOME/.local/share/icons/Papirus-Phosphor" \
+       "$HOME/.themes/Phosphor"
+rm -f  "$HOME/.local/share/qterminal/color-schemes/Phosphor.colorscheme" \
+       "$HOME/.local/bin/phosphor-rain" \
+       "$HOME/.config/autostart/phosphor-rain.desktop" \
+       "$HOME/.config/autostart/xscreensaver-rain.desktop"
 
 if [ "$KEEP" -eq 1 ]; then
     say "left your settings untouched (--keep-config)"
     exit 0
 fi
 
-BACKUP=$(ls -1d "$HOME"/.matrix-desktop-backup-* 2>/dev/null | sort | tail -1)
+BACKUP=$(ls -1d "$HOME"/.phosphor-desktop-backup-* 2>/dev/null | sort | tail -1)
 if [ -z "$BACKUP" ]; then
     say "no backup found; settings left as they are"
     echo "   set the theme and icons back by hand in LXQt Settings > Appearance"

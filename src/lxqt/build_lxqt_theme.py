@@ -1,7 +1,7 @@
 import re, sys, pathlib, shutil
 
 SRC = pathlib.Path("/usr/share/lxqt/themes/dark")
-DST = pathlib.Path.home() / ".local/share/lxqt/themes/Matrix"
+DST = pathlib.Path.home() / ".local/share/lxqt/themes/Phosphor"
 
 def green_from_lum(L):
     """Map a grey level to a phosphor-green of comparable luminance."""

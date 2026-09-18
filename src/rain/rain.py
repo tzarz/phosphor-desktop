@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Flat 2D Matrix digital rain as a live desktop background (X11 / LXQt / Openbox).
+Flat 2D Phosphor digital rain as a live desktop background (X11 / LXQt / Openbox).
 
 Design notes
 ------------
@@ -313,7 +313,7 @@ class RainWindow(Gtk.Window):
 
 
 def parse_args(argv):
-    p = argparse.ArgumentParser(description="Flat 2D Matrix rain wallpaper")
+    p = argparse.ArgumentParser(description="Flat 2D Phosphor rain wallpaper")
     p.add_argument("--geometry", action="append", default=[],
                    metavar="WxH+X+Y", help="repeatable; one window per entry")
     p.add_argument("--fps", type=float, default=14.0)

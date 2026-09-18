@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=XScreenSaver (GLMatrix)
-Comment=Matrix screensaver daemon
+Name=XScreenSaver (digital rain)
+Comment=Phosphor screensaver daemon
 Exec=xscreensaver -no-splash
 Terminal=false
 OnlyShowIn=LXQt;

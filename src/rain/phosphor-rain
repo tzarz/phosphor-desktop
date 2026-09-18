@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Control script for the flat 2D Matrix rain wallpaper.
+# Control script for the flat 2D Phosphor rain wallpaper.
 set -uo pipefail
 
-RENDERER="${HOME}/.local/share/matrix-rain/rain.py"
-CONF="${HOME}/.config/matrix-rain.conf"
+RENDERER="${HOME}/.local/share/phosphor-rain/rain.py"
+CONF="${HOME}/.config/phosphor-rain.conf"
 EXCLUDE=""
 RAIN_OPTS="--fps 14 --size 16 --density 0.55"
 # shellcheck source=/dev/null
 [ -r "$CONF" ] && . "$CONF"
 
 # Marker string used to find our own processes without matching this script.
-MARK="matrix-rain-renderer"
+MARK="phosphor-rain-renderer"
 
 wait_for_layout() {
     # At login this may run before the monitor layout has settled (this box has
@@ -32,7 +32,7 @@ running_pids() {
     # (whose command line contains the renderer path as literal text).
     local p
     for p in $(pgrep -x python3 2>/dev/null); do
-        if tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null | grep -q "share/matrix-rain/rain.py"; then
+        if tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null | grep -q "share/phosphor-rain/rain.py"; then
             echo "$p"
         fi
     done
@@ -41,7 +41,7 @@ running_pids() {
 stop() {
     local pids; pids=$(running_pids)
     if [ -n "$pids" ]; then kill $pids 2>/dev/null; sleep 0.5; fi
-    echo "matrix rain: stopped"
+    echo "phosphor rain: stopped"
 }
 
 geometries() {
@@ -67,11 +67,11 @@ start() {
     [ ${#args[@]} -eq 0 ] && { echo "no eligible monitors" >&2; return 1; }
     # shellcheck disable=SC2086
     setsid nohup /usr/bin/python3 "$RENDERER" $RAIN_OPTS "${args[@]}" \
-        >/tmp/matrix-rain.log 2>&1 < /dev/null &
+        >/tmp/phosphor-rain.log 2>&1 < /dev/null &
     sleep 2
-    if [ -n "$(running_pids)" ]; then echo "matrix rain: started"
-    else echo "matrix rain: FAILED - see /tmp/matrix-rain.log" >&2
-         tail -5 /tmp/matrix-rain.log >&2; return 1; fi
+    if [ -n "$(running_pids)" ]; then echo "phosphor rain: started"
+    else echo "phosphor rain: FAILED - see /tmp/phosphor-rain.log" >&2
+         tail -5 /tmp/phosphor-rain.log >&2; return 1; fi
 }
 
 case "${1:-start}" in
@@ -81,6 +81,6 @@ case "${1:-start}" in
     toggle) if [ -n "$(running_pids)" ]; then stop; else start; fi ;;
     status) if [ -n "$(running_pids)" ]; then echo "running (pid $(running_pids | tr '\n' ' '))"
             else echo "not running"; fi ;;
-    *) echo "usage: matrix-rain {start [--wait]|stop|restart|toggle|status}" >&2
+    *) echo "usage: phosphor-rain {start [--wait]|stop|restart|toggle|status}" >&2
        exit 2 ;;
 esac

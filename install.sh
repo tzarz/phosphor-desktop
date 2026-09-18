@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# matrix-desktop installer for Lubuntu / LXQt + Openbox on X11.
+# phosphor-desktop installer for Lubuntu / LXQt + Openbox on X11.
 #
 # Everything installs into your home directory. Nothing needs root, and every
 # file this touches is backed up first.
@@ -16,7 +16,7 @@ SRC="$HERE/src"
 APPLY=1
 EXCLUDE=""
 STAMP="$(date +%Y%m%d-%H%M%S)"
-BACKUP="$HOME/.matrix-desktop-backup-$STAMP"
+BACKUP="$HOME/.phosphor-desktop-backup-$STAMP"
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -45,7 +45,7 @@ command -v xrandr >/dev/null || MISSING+=("x11-xserver-utils")
 fc-list :lang=ja >/dev/null 2>&1 && [ -n "$(fc-list :lang=ja family)" ] \
     || MISSING+=("fonts-noto-cjk")
 [ -x /usr/libexec/xscreensaver/glmatrix ] || [ -x /usr/lib/xscreensaver/glmatrix ] \
-    || warn "xscreensaver-gl not found - the GLMatrix screensaver will be skipped"
+    || warn "xscreensaver-gl not found - the digital-rain screensaver will be skipped"
 
 if [ ${#MISSING[@]} -gt 0 ]; then
     echo
@@ -64,17 +64,17 @@ backup() {
 
 # ------------------------------------------------------------------- live wallpaper
 say "installing the live wallpaper"
-mkdir -p "$HOME/.local/share/matrix-rain" "$HOME/.local/bin"
-install -m 0644 "$SRC/rain/rain.py"      "$HOME/.local/share/matrix-rain/rain.py"
-install -m 0755 "$SRC/rain/matrix-rain"  "$HOME/.local/bin/matrix-rain"
-if [ ! -e "$HOME/.config/matrix-rain.conf" ]; then
-    install -m 0644 "$SRC/rain/matrix-rain.conf" "$HOME/.config/matrix-rain.conf"
+mkdir -p "$HOME/.local/share/phosphor-rain" "$HOME/.local/bin"
+install -m 0644 "$SRC/rain/rain.py"      "$HOME/.local/share/phosphor-rain/rain.py"
+install -m 0755 "$SRC/rain/phosphor-rain"  "$HOME/.local/bin/phosphor-rain"
+if [ ! -e "$HOME/.config/phosphor-rain.conf" ]; then
+    install -m 0644 "$SRC/rain/phosphor-rain.conf" "$HOME/.config/phosphor-rain.conf"
 else
-    say "keeping your existing ~/.config/matrix-rain.conf"
+    say "keeping your existing ~/.config/phosphor-rain.conf"
 fi
 if [ -n "$EXCLUDE" ]; then
-    backup "$HOME/.config/matrix-rain.conf"
-    sed -i "s|^EXCLUDE=.*|EXCLUDE=\"$EXCLUDE\"|" "$HOME/.config/matrix-rain.conf"
+    backup "$HOME/.config/phosphor-rain.conf"
+    sed -i "s|^EXCLUDE=.*|EXCLUDE=\"$EXCLUDE\"|" "$HOME/.config/phosphor-rain.conf"
     say "excluded outputs: $EXCLUDE"
 fi
 
@@ -84,12 +84,12 @@ say "building the LXQt theme"
 
 say "installing the Openbox theme"
 mkdir -p "$HOME/.themes"
-cp -a "$SRC/openbox/Matrix" "$HOME/.themes/"
+cp -a "$SRC/openbox/Phosphor" "$HOME/.themes/"
 
 say "building the icon theme (this takes a moment)"
 /usr/bin/python3 "$SRC/icons/build_icons.py" || die "icon theme build failed"
 command -v gtk-update-icon-cache >/dev/null && \
-    gtk-update-icon-cache -f -t "$HOME/.local/share/icons/Papirus-Matrix" >/dev/null 2>&1
+    gtk-update-icon-cache -f -t "$HOME/.local/share/icons/Papirus-Phosphor" >/dev/null 2>&1
 
 # ---------------------------------------------------------------------- terminal
 if [ -d /usr/share/qtermwidget6 ] || [ -d /usr/share/qtermwidget5 ] \
@@ -99,24 +99,24 @@ if [ -d /usr/share/qtermwidget6 ] || [ -d /usr/share/qtermwidget5 ] \
     # testing each candidate path against a live qterminal.
     SCHEMES="$HOME/.local/share/qterminal/color-schemes"
     mkdir -p "$SCHEMES"
-    install -m 0644 "$SRC/terminal/Matrix.colorscheme" "$SCHEMES/Matrix.colorscheme"
+    install -m 0644 "$SRC/terminal/Phosphor.colorscheme" "$SCHEMES/Phosphor.colorscheme"
     say "installed QTerminal colour scheme to $SCHEMES"
 
     QTI="$HOME/.config/qterminal.org/qterminal.ini"
     if pgrep -x qterminal >/dev/null 2>&1; then
         warn "qterminal is running and rewrites its config on exit."
-        warn "Pick it yourself: Preferences > Appearance > Color scheme > Matrix"
+        warn "Pick it yourself: Preferences > Appearance > Color scheme > Phosphor"
     elif [ -f "$QTI" ]; then
         backup "$QTI"
         /usr/bin/python3 - "$QTI" <<'PYQT'
 import sys, re, pathlib
 p = pathlib.Path(sys.argv[1]); s = p.read_text()
-for k, v in (("colorScheme", "Matrix"), ("fontFamily", "Ubuntu Mono")):
+for k, v in (("colorScheme", "Phosphor"), ("fontFamily", "Ubuntu Mono")):
     if re.search(rf"(?m)^{k}=", s):
         s = re.sub(rf"(?m)^{k}=.*$", f"{k}={v}", s)
 p.write_text(s)
 PYQT
-        say "set QTerminal colour scheme to Matrix"
+        say "set QTerminal colour scheme to Phosphor"
     fi
 fi
 
@@ -124,7 +124,7 @@ fi
 if [ -x /usr/libexec/xscreensaver/glmatrix ] || [ -x /usr/lib/xscreensaver/glmatrix ]; then
     if [ ! -e "$HOME/.xscreensaver" ]; then
         install -m 0644 "$SRC/xscreensaver/xscreensaver.conf" "$HOME/.xscreensaver"
-        say "installed GLMatrix screensaver config"
+        say "installed digital-rain screensaver config"
     else
         say "keeping your existing ~/.xscreensaver"
     fi
@@ -141,7 +141,7 @@ done
 
 if [ "$APPLY" -eq 0 ]; then
     say "files installed; settings left untouched (--no-apply)"
-    echo "   run 'matrix-rain start' to try the wallpaper"
+    echo "   run 'phosphor-rain start' to try the wallpaper"
     exit 0
 fi
 
@@ -157,7 +157,7 @@ t = p.read_text() if p.exists() else "[General]\n"
 def setkey(t,k,v):
     if re.search(rf"(?m)^{k}=", t): return re.sub(rf"(?m)^{k}=.*$", f"{k}={v}", t)
     return re.sub(r"(?m)^\[General\]$", f"[General]\n{k}={v}", t, count=1)
-for k,v in (("theme","Matrix"),("icon_theme","Papirus-Matrix")):
+for k,v in (("theme","Phosphor"),("icon_theme","Papirus-Phosphor")):
     t = setkey(t,k,v)
 p.write_text(t)
 PY
@@ -168,8 +168,8 @@ import pathlib, re
 p = pathlib.Path.home()/".config/openbox/rc.xml"
 if p.exists():
     t = p.read_text()
-    t = re.sub(r"(<theme>.*?<name>)[^<]*(</name>)", r"\1Matrix\2", t, count=1, flags=re.S)
-    rule = """    <!-- matrix-desktop live wallpaper -->
+    t = re.sub(r"(<theme>.*?<name>)[^<]*(</name>)", r"\1Phosphor\2", t, count=1, flags=re.S)
+    rule = """    <!-- phosphor-desktop live wallpaper -->
     <application name="rain.py" class="Rain.py">
       <decor>no</decor>
       <skip_taskbar>yes</skip_taskbar>
@@ -217,10 +217,28 @@ if pgrep -x lxqt-panel >/dev/null; then
     setsid nohup lxqt-panel >/dev/null 2>&1 < /dev/null &
 fi
 
-"$HOME/.local/bin/matrix-rain" restart >/dev/null 2>&1
+"$HOME/.local/bin/phosphor-rain" restart >/dev/null 2>&1
+
+# Make the output selection visible. A fresh config has EXCLUDE empty, which
+# means every display gets the wallpaper - including one that may be driving
+# something that is not a desktop.
+echo
+say "displays the wallpaper will draw on"
+CUR_EXCLUDE=$(sed -n 's/^EXCLUDE="\(.*\)"/\1/p' "$HOME/.config/phosphor-rain.conf" 2>/dev/null)
+xrandr --listmonitors 2>/dev/null | tail -n +2 | while read -r _i name geom _c; do
+    name="${name#+}"; name="${name#\*}"; name="${name#+}"
+    mark="   draw"
+    for e in $CUR_EXCLUDE; do [ "$e" = "$name" ] && mark="   skip"; done
+    printf '%s  %-10s %s\n' "$mark" "$name" "$geom"
+done
+if [ -z "$CUR_EXCLUDE" ]; then
+    warn "EXCLUDE is empty - every display above will show the wallpaper."
+    warn "If one of them drives a projector, capture card or an instrument,"
+    warn "add its name to EXCLUDE in ~/.config/phosphor-rain.conf and restart."
+fi
 
 echo
 say "done. backup of everything changed: $BACKUP"
-echo "   matrix-rain {start|stop|toggle|status}   control the wallpaper"
-echo "   ~/.config/matrix-rain.conf               fps, density, excluded outputs"
+echo "   phosphor-rain {start|stop|toggle|status}   control the wallpaper"
+echo "   ~/.config/phosphor-rain.conf               fps, density, excluded outputs"
 echo "   ./uninstall.sh                           revert"

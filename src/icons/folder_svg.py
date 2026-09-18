@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Tron/Matrix outline folder icons: black body, phosphor-green line art."""
+"""Outline folder icons: near-black body, phosphor-green line art."""
 
 GREEN      = "#19FF42"   # bright phosphor line
 GREEN_DIM  = "#0E8F26"   # inner detail

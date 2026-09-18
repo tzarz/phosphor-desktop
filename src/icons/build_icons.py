@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """
-Build the "Papirus-Matrix" icon theme.
+Build the "Papirus-Phosphor" icon theme.
 
 Two things happen here:
 
 1. Folder / directory icons are DRAWN from scratch (see folder_svg.py) as
-   Tron-style line art: a near-black body with a phosphor-green outline and a
+   outline line art: a near-black body with a phosphor-green outline and a
    faint glow. Papirus' own green folders are a muted olive (#87b158), which
-   does not read as "Matrix", so we do not reuse them.
+   does not read as "Phosphor", so we do not reuse them.
 
 2. Monochrome categories (actions, status, panel, emblems, animations) are
    copied from Papirus-Dark with their greys remapped to green of the same
@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from folder_svg import folder_svg, GLYPHS
 
 SRC = pathlib.Path("/usr/share/icons/Papirus-Dark")
-DST = pathlib.Path.home()/".local/share/icons/Papirus-Matrix"
+DST = pathlib.Path.home()/".local/share/icons/Papirus-Phosphor"
 
 RECOLOR_CATS = {"actions", "status", "panel", "emblems", "animations"}
 COLOR_WORDS = ("adwaita black blue bluegrey breeze brown carmine cyan darkcyan "
@@ -152,8 +152,8 @@ def main():
                 shutil.rmtree(out, ignore_errors=True)
 
     lines = ["[Icon Theme]",
-             "Name=Papirus-Matrix",
-             "Comment=Tron-green folders and monochrome icons over Papirus-Dark",
+             "Name=Papirus-Phosphor",
+             "Comment=Green outline folders and monochrome icons over Papirus-Dark",
              "Inherits=Papirus-Dark,breeze-dark,hicolor",
              "Example=folder",
              "FollowsColorScheme=true",

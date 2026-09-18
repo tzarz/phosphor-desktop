@@ -1,11 +1,11 @@
-; Matrix colour scheme for QTerminal / qtermwidget.
+; Phosphor colour scheme for QTerminal / qtermwidget.
 ;
 ; Mostly phosphor green, but red and amber are kept recognisable so error
 ; output, git diffs and ls colours stay readable. A fully monochrome palette
 ; looks great and is miserable to work in.
 
 [General]
-Description=Matrix
+Description=Phosphor
 Opacity=1
 
 [Background]
