@@ -91,6 +91,35 @@ say "building the icon theme (this takes a moment)"
 command -v gtk-update-icon-cache >/dev/null && \
     gtk-update-icon-cache -f -t "$HOME/.local/share/icons/Papirus-Matrix" >/dev/null 2>&1
 
+# ---------------------------------------------------------------------- terminal
+if [ -d /usr/share/qtermwidget6 ] || [ -d /usr/share/qtermwidget5 ] \
+   || command -v qterminal >/dev/null; then
+    # qtermwidget itself only reads /usr/share/qtermwidget*/color-schemes, but
+    # qterminal additionally reads this user-writable directory. Verified by
+    # testing each candidate path against a live qterminal.
+    SCHEMES="$HOME/.local/share/qterminal/color-schemes"
+    mkdir -p "$SCHEMES"
+    install -m 0644 "$SRC/terminal/Matrix.colorscheme" "$SCHEMES/Matrix.colorscheme"
+    say "installed QTerminal colour scheme to $SCHEMES"
+
+    QTI="$HOME/.config/qterminal.org/qterminal.ini"
+    if pgrep -x qterminal >/dev/null 2>&1; then
+        warn "qterminal is running and rewrites its config on exit."
+        warn "Pick it yourself: Preferences > Appearance > Color scheme > Matrix"
+    elif [ -f "$QTI" ]; then
+        backup "$QTI"
+        /usr/bin/python3 - "$QTI" <<'PYQT'
+import sys, re, pathlib
+p = pathlib.Path(sys.argv[1]); s = p.read_text()
+for k, v in (("colorScheme", "Matrix"), ("fontFamily", "Ubuntu Mono")):
+    if re.search(rf"(?m)^{k}=", s):
+        s = re.sub(rf"(?m)^{k}=.*$", f"{k}={v}", s)
+p.write_text(s)
+PYQT
+        say "set QTerminal colour scheme to Matrix"
+    fi
+fi
+
 # -------------------------------------------------------------------- screensaver
 if [ -x /usr/libexec/xscreensaver/glmatrix ] || [ -x /usr/lib/xscreensaver/glmatrix ]; then
     if [ ! -e "$HOME/.xscreensaver" ]; then

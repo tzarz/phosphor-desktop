@@ -20,7 +20,8 @@ rm -rf "$HOME/.local/share/matrix-rain" \
        "$HOME/.local/share/lxqt/themes/Matrix" \
        "$HOME/.local/share/icons/Papirus-Matrix" \
        "$HOME/.themes/Matrix"
-rm -f  "$HOME/.local/bin/matrix-rain" \
+rm -f  "$HOME/.local/share/qterminal/color-schemes/Matrix.colorscheme" \
+       "$HOME/.local/bin/matrix-rain" \
        "$HOME/.config/autostart/matrix-rain.desktop" \
        "$HOME/.config/autostart/xscreensaver-matrix.desktop"
 
