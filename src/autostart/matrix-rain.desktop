@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Matrix Rain Wallpaper
+Comment=Flat 2D katakana digital rain behind the desktop
+Exec=__HOME__/.local/bin/matrix-rain start --wait
+Terminal=false
+X-LXQt-Need-Tray=false
+OnlyShowIn=LXQt;
