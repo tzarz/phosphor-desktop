@@ -247,6 +247,21 @@ your theme will silently fall through to the one it inherits from.
 and `Nightmare` themes on your machine, rather than vendored, so they track
 their upstreams and the repo stays small.
 
+**Application windows** are a separate system from the LXQt theme, which only
+covers the panel, menus, runner and notifications. Qt programs — the file
+manager, the settings dialogs — take their colours from the Qt palette in the
+`[Palette]` section of `lxqt.conf`. There is a catch worth knowing:
+
+```ini
+[Qt]
+style=Fusion        # without this the palette below does nothing
+```
+
+The default **Breeze** style paints its own colours and ignores a custom
+palette, so setting `[Palette]` alone changes nothing at all. **Fusion** honours
+it. GTK programs ignore both and read `~/.config/gtk-*/`, which is why this
+ships GTK 2/3/4 settings and a `gtk.css` as well.
+
 **The terminal scheme** is mostly green, but keeps red and amber readable so
 error output, diffs and `ls` colours still work. A fully monochrome palette
 photographs well and is miserable to use.

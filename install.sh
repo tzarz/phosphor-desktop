@@ -182,14 +182,21 @@ for k,v in (("theme","Phosphor"),("icon_theme","Papirus-Phosphor")):
 p.write_text(t)
 PY
 
-# The Qt platform theme reads the palette out of lxqt.conf itself; the file in
-# ~/.local/share/lxqt/palettes is only a preset for the settings GUI.
+# Two things are needed for Qt application windows, and both matter:
+#
+#   [Qt] style=Fusion  - the default Breeze style paints its own colours and
+#                        ignores a custom palette, so without this the palette
+#                        below has no visible effect at all. Fusion honours it.
+#   [Palette] ...      - the colours themselves. The Qt platform theme reads
+#                        these out of lxqt.conf; the file installed under
+#                        ~/.local/share/lxqt/palettes is only a preset for the
+#                        settings GUI.
 /usr/bin/python3 - "$SRC/qt/Phosphor.palette" <<'PALEOF'
 import sys, re, pathlib
 pal = pathlib.Path(sys.argv[1]).read_text().strip()
 p = pathlib.Path.home()/".config/lxqt/lxqt.conf"
-t = re.sub(r"(?ms)^\[Palette\].*?(?=^\[|\Z)", "", p.read_text()).rstrip()
-p.write_text(t + "\n\n" + pal + "\n")
+t = re.sub(r"(?ms)^\[(Palette|Qt)\].*?(?=^\[|\Z)", "", p.read_text()).rstrip()
+p.write_text(t + "\n\n[Qt]\nstyle=Fusion\n\n" + pal + "\n")
 PALEOF
 
 backup "$HOME/.config/openbox/rc.xml"
