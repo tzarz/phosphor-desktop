@@ -1,0 +1,40 @@
+/* Phosphor accents for GTK 3/4 applications.
+ *
+ * The named colours below are the ones the stock themes derive most of their
+ * widget colours from, so redefining them recolours the bulk of an app without
+ * shipping a whole GTK theme. Applications that hardcode their own colours
+ * (Firefox content, Electron apps) are not affected - they render their own UI.
+ */
+
+@define-color theme_bg_color            #000000;
+@define-color theme_base_color          #040A05;
+@define-color theme_fg_color            #16DE39;
+@define-color theme_text_color          #16DE39;
+@define-color theme_selected_bg_color   #0E8F26;
+@define-color theme_selected_fg_color   #19FF42;
+@define-color insensitive_bg_color      #050A05;
+@define-color insensitive_fg_color      #075009;
+@define-color borders                   #0A661A;
+@define-color warning_color             #AADE3C;
+@define-color error_color               #D64034;
+@define-color success_color             #19FF42;
+
+/* libadwaita / GTK4 names */
+@define-color window_bg_color           #000000;
+@define-color window_fg_color           #16DE39;
+@define-color view_bg_color             #040A05;
+@define-color view_fg_color             #16DE39;
+@define-color accent_bg_color           #0E8F26;
+@define-color accent_fg_color           #19FF42;
+@define-color accent_color              #19FF42;
+@define-color headerbar_bg_color        #050A05;
+@define-color headerbar_fg_color        #16DE39;
+@define-color popover_bg_color          #020A03;
+@define-color popover_fg_color          #16DE39;
+@define-color card_bg_color             #040A05;
+
+/* keep focus visible against the dark background */
+*:focus-visible {
+    outline: 1px solid #19FF42;
+    outline-offset: -2px;
+}

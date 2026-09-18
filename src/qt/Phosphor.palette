@@ -1,0 +1,11 @@
+[Palette]
+base_color=#040A05
+highlight_color=#0E8F26
+highlighted_text_color=#020A03
+link_color=#19FF42
+link_visited_color=#11AB2C
+text_color=#16DE39
+window_color=#000000
+window_text_color=#16DE39
+tooltip_base_color=#020A03
+tooltip_text_color=#16DE39

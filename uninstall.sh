@@ -21,6 +21,7 @@ rm -rf "$HOME/.local/share/phosphor-rain" \
        "$HOME/.local/share/icons/Papirus-Phosphor" \
        "$HOME/.themes/Phosphor"
 rm -f  "$HOME/.local/share/qterminal/color-schemes/Phosphor.colorscheme" \
+       "$HOME/.local/share/lxqt/palettes/Phosphor" \
        "$HOME/.local/bin/phosphor-rain" \
        "$HOME/.config/autostart/phosphor-rain.desktop" \
        "$HOME/.config/autostart/xscreensaver-rain.desktop"

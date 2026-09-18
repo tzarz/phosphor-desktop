@@ -91,6 +91,26 @@ say "building the icon theme (this takes a moment)"
 command -v gtk-update-icon-cache >/dev/null && \
     gtk-update-icon-cache -f -t "$HOME/.local/share/icons/Papirus-Phosphor" >/dev/null 2>&1
 
+# --------------------------------------------------------- Qt palette + GTK
+say "installing the Qt palette and GTK settings"
+mkdir -p "$HOME/.local/share/lxqt/palettes"
+install -m 0644 "$SRC/qt/Phosphor.palette" "$HOME/.local/share/lxqt/palettes/Phosphor"
+
+for v in 3.0 4.0; do
+    mkdir -p "$HOME/.config/gtk-$v"
+    backup "$HOME/.config/gtk-$v/settings.ini"
+    backup "$HOME/.config/gtk-$v/gtk.css"
+    install -m 0644 "$SRC/gtk/settings.ini" "$HOME/.config/gtk-$v/settings.ini"
+    install -m 0644 "$SRC/gtk/gtk.css"      "$HOME/.config/gtk-$v/gtk.css"
+done
+backup "$HOME/.gtkrc-2.0"
+{
+  echo 'gtk-theme-name="Breeze-Dark"'
+  echo 'gtk-icon-theme-name="Papirus-Phosphor"'
+  echo 'gtk-font-name="Ubuntu 11"'
+  echo 'gtk-cursor-theme-name="breeze_cursors"'
+} > "$HOME/.gtkrc-2.0"
+
 # ---------------------------------------------------------------------- terminal
 if [ -d /usr/share/qtermwidget6 ] || [ -d /usr/share/qtermwidget5 ] \
    || command -v qterminal >/dev/null; then
@@ -161,6 +181,16 @@ for k,v in (("theme","Phosphor"),("icon_theme","Papirus-Phosphor")):
     t = setkey(t,k,v)
 p.write_text(t)
 PY
+
+# The Qt platform theme reads the palette out of lxqt.conf itself; the file in
+# ~/.local/share/lxqt/palettes is only a preset for the settings GUI.
+/usr/bin/python3 - "$SRC/qt/Phosphor.palette" <<'PALEOF'
+import sys, re, pathlib
+pal = pathlib.Path(sys.argv[1]).read_text().strip()
+p = pathlib.Path.home()/".config/lxqt/lxqt.conf"
+t = re.sub(r"(?ms)^\[Palette\].*?(?=^\[|\Z)", "", p.read_text()).rstrip()
+p.write_text(t + "\n\n" + pal + "\n")
+PALEOF
 
 backup "$HOME/.config/openbox/rc.xml"
 /usr/bin/python3 - <<'PY'
